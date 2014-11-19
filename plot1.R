@@ -13,4 +13,12 @@ SCC <- readRDS("Source_Classification_Code.rds")
 ## We want to graph the total particulate matter PM25 for each year
 ## and see if it is increasing or otherwise.
 ##
-## might make year and type into factors
+## fips is loaded as character, not numeric.
+##
+## may use aggregate or something from plyr
+##
+##
+##
+EmByYear <- aggregate(NEI$Emissions ~ NEI$year, FUN = sum)
+
+## hist or bar?
