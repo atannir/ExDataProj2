@@ -21,4 +21,15 @@ SCC <- readRDS("Source_Classification_Code.rds")
 ##
 EmByYear <- aggregate(NEI$Emissions ~ NEI$year, FUN = sum)
 
-## hist or bar?
+names(EmByYear) <- c("Year", "Emissions")
+## line or bar?
+
+plot(EmByYear$Emissions ~ EmByYear$Year, 
+     main = "PM-25 Concentrations in 1999, 2002, 2005, 2008",
+     type = "b",
+     xlab = "Year", ylab = "",
+     ylim = c(2500000,7500000),
+     lty = "12",
+     xaxp = c(1999, 2008, 9),
+     yaxp = c(2500000,7500000, 5),
+     las=1)
