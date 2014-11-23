@@ -10,32 +10,33 @@ SCC <- readRDS("Source_Classification_Code.rds")
 
 ## confirmed, it does take a while...
 ##
-## We want to graph the total particulate matter PM25 for each year
-## and see if it is increasing or otherwise.
+## plot2: Have total emissions from PM2.5 decreased in the 
+## Baltimore City, Maryland (fips == 24510) from 1999 to 2008?
+## Use base plotting system.
 ##
 ## fips is loaded as character, not numeric.
 ##
 ## may use aggregate or something from plyr
 ##
 ##
-##
-EmByYear <- aggregate(NEI$Emissions ~ NEI$year, FUN = sum)
 
-names(EmByYear) <- c("Year", "Emissions")
-## line or bar?
+BaltOnly <- NEI[NEI$fips == "24510", ]
 
-png("plot1.png",
+BaltByYear <- aggregate(BaltOnly$Emissions ~ BaltOnly$year, FUN = sum)
+
+names(BaltByYear) <- c("Year", "Emissions")
+
+
+png("plot2.png",
     width = 480,
     height = 480)
 
-plot(EmByYear$Emissions ~ EmByYear$Year, 
-     main = "PM-2.5 Concentrations in 1999, 2002, 2005, 2008",
+plot(BaltByYear$Emissions ~ BaltByYear$Year, 
+     main = "Baltimore PM-2.5 Conc. in 1999, 2002, 2005, 2008",
      type = "b",
      xlab = "Year", ylab = "",
-     ylim = c(2500000,7500000),
      lty = "12",
      xaxp = c(1999, 2008, 9),
-     yaxp = c(2500000,7500000, 5),
      cex.axis = 0.7,
      las=1)
 
