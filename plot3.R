@@ -21,31 +21,24 @@ SCC <- readRDS("Source_Classification_Code.rds")
 ##
 
 ## remember to install.packages("plyr") before use
-library("plyr")
+## library("plyr")
+
+## remember to install.packages("ggplot2") before use
+library(ggplot2)
+
 
 BaltOnly <- NEI[NEI$fips == "24510", ]
 
 BaltByTypeYear <- aggregate(BaltOnly$Emissions ~ BaltOnly$type + BaltOnly$year, FUN = sum)
 
-## not needed (yet)
-## BaltSCC <- merge(BaltOnly, SCC, by.x = "SCC", by.y = "SCC")
+names(BaltByTypeYear) <- c("Type", "Year", "Emissions")
 
-# BaltByYear <- aggregate(BaltOnly$Emissions ~ BaltOnly$year, FUN = sum)
+BaltByTypeYear[, "Year"] <- as.factor(BaltByTypeYear[, "Year"])
+BaltByTypeYear[, "Type"] <- as.factor(BaltByTypeYear[, "Type"])
 
-# names(BaltByYear) <- c("Year", "Emissions")
+## position_dodge makes it line up, not stack
+## stacked bar is neat but not quite right.
+## Adding factor call above made it discrete.
+ggplot(data = BaltByTypeYear, aes(x=Year, y=Emissions, fill=Type)) + geom_bar(stat="identity", position = position_dodge())
 
-
-# png("plot3.png",
-#     width = 480,
-#     height = 480)
-
-# plot(BaltByYear$Emissions ~ BaltByYear$Year, 
-#      main = "Baltimore PM-2.5 Conc. in 1999, 2002, 2005, 2008",
-#      type = "b",
-#      xlab = "Year", ylab = "",
-#      lty = "12",
-#      xaxp = c(1999, 2008, 9),
-#      cex.axis = 0.7,
-#      las=1)
-
-# dev.off()
+ggsave(filename = "plot3.png", height = 5, width = 5, dpi=100)
